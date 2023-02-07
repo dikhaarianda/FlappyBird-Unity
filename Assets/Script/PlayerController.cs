@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class PlayerController : MonoBehaviour
     Rigidbody2D rb; // emmasukan kelas Rigidbody2D menjadi objek
     public float jumpForce;
     public GameObject loseScreenUi;
+    public int score;
+    public Text scoreUI;
 
     // reference objek Rigidbody2D
     private void Awake () {
@@ -51,9 +54,20 @@ public class PlayerController : MonoBehaviour
         Time.timeScale = 0;
     }
 
+    void AddScore() {
+        score++;
+        scoreUI.text = score.ToString();
+    }
+
     private void OnCollisionEnter2D(Collision2D collision) {
         if(collision.collider.CompareTag("obstacel")) {
             PlayerLose();
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collider) {
+        if (collider.CompareTag("score")) {
+            AddScore();
         }
     }
 }
