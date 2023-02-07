@@ -10,8 +10,9 @@ public class PlayerController : MonoBehaviour
     Rigidbody2D rb; // emmasukan kelas Rigidbody2D menjadi objek
     public float jumpForce;
     public GameObject loseScreenUi;
-    public int score;
-    public Text scoreUI;
+    public int score, highScore;
+    public Text scoreUI, highScoreUI;
+    string HIGHSCORE = "HIGHSCORE";
 
     // reference objek Rigidbody2D
     private void Awake () {
@@ -21,7 +22,7 @@ public class PlayerController : MonoBehaviour
     // Use this for instalation
     void Start()
     {
-
+        highScore = PlayerPrefs.GetInt(HIGHSCORE);
     }
 
     // Update is called once per frame
@@ -40,6 +41,7 @@ public class PlayerController : MonoBehaviour
         // melompat melalui input keyboard Space
         if(Input.GetKeyUp("space"))
         {
+            AudioManager.singleton.PlaySound(0);
             rb.velocity = Vector2.up * jumpForce;
         }
     }
@@ -50,13 +52,20 @@ public class PlayerController : MonoBehaviour
     }
 
     void PlayerLose() {
+        AudioManager.singleton.PlaySound(1);
+        if (score > highScore) {
+            highScore = score;
+            PlayerPrefs.SetInt(HIGHSCORE, highScore);
+        }
+        highScoreUI.text = "High Score: " + highScore.ToString();
         loseScreenUi.SetActive(true);
         Time.timeScale = 0;
     }
 
     void AddScore() {
+        AudioManager.singleton.PlaySound(2);
         score++;
-        scoreUI.text = score.ToString();
+        scoreUI.text = "Score: " + score.ToString();
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {

@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - obstacel
+  - score
   layers:
   - Default
   - TransparentFX
