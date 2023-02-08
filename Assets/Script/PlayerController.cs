@@ -9,7 +9,8 @@ public class PlayerController : MonoBehaviour
 
     Rigidbody2D rb; // emmasukan kelas Rigidbody2D menjadi objek
     public float jumpForce;
-    public GameObject loseScreenUi;
+    public GameObject loseScreenUI, starScreenUI;
+    public Button play;
     public int score, highScore;
     public Text scoreUI, highScoreUI;
     string HIGHSCORE = "HIGHSCORE";
@@ -22,6 +23,8 @@ public class PlayerController : MonoBehaviour
     // Use this for instalation
     void Start()
     {
+        Time.timeScale = 0;
+        play.onClick.AddListener(StartGame);
         highScore = PlayerPrefs.GetInt(HIGHSCORE);
     }
 
@@ -58,7 +61,7 @@ public class PlayerController : MonoBehaviour
             PlayerPrefs.SetInt(HIGHSCORE, highScore);
         }
         highScoreUI.text = "High Score: " + highScore.ToString();
-        loseScreenUi.SetActive(true);
+        loseScreenUI.SetActive(true);
         Time.timeScale = 0;
     }
 
@@ -66,6 +69,11 @@ public class PlayerController : MonoBehaviour
         AudioManager.singleton.PlaySound(2);
         score++;
         scoreUI.text = "Score: " + score.ToString();
+    }
+
+    void StartGame() {
+        Time.timeScale = 1;
+        starScreenUI.SetActive(false);
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
